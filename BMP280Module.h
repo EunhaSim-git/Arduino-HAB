@@ -14,7 +14,7 @@ struct BMP280Reading {
 
 class BMP280Module {
   public:
-    BMP280Module(uint8_t i2cAddress = 0x76,
+    BMP280Module(uint8_t i2cAddress = 0x77,
                 float seaLevelHpa = 1013.25f,
                 unsigned long sampleIntervalMs = 200UL);
 

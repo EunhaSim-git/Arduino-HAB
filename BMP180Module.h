@@ -3,7 +3,7 @@
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BMP085_U.h>
+//#include <Adafruit_BMP085_U.h>
 
 extern Adafruit_BMP085_Unified bmp;
 

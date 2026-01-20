@@ -30,7 +30,7 @@ unsigned long lastAht10Ms = 0;
 
 
 // Create BMP280 module instance
-BMP280Module bmp280(0x76, 1013.25f, SENSOR_INTERVAL_MS);
+BMP280Module bmp280(0x77, 1013.25f, SENSOR_INTERVAL_MS);
 
 
 uint8_t smallCircle[8][12] = {
