@@ -132,13 +132,17 @@ void loop() {
     const BMP280Reading &r = bmp280.getLastReading();
 
       if (!bmp280.isValid()) {                // checks the last reading's pressure against the range (300-1100 hPa)
-        logToSDCard("Warning: BMP280 out-of-range reading");
+        String barometerLog = String("Temp: ") + r.temperatureC +
+                                "C, Pressure: " + r.pressureHpa +
+                                "hPa (OOR), Altitude: " + r.altitudeM +       // flag it as out-of-range
+                                "m (OOR)";  
+        logToSDCard(barometerLog);
       } else {
         String barometerLog = String("Temp: ") + r.temperatureC +
                                 "C, Pressure: " + r.pressureHpa +
                                 "hPa, Altitude: " + r.altitudeM +
                                 "m";
-        logToSDCard(barometerLog);
+        logToSDCard(barometerLog);                        
       }
     } 
 
@@ -174,14 +178,20 @@ void loop() {
     flushSD();
   }
 
+  float altitude = 0.0f;
   // Before termination logic, get current altitude from BMP280
   if (bmp280.isValid()) {
-      float altitude = bmp280.getLastReading().altitudeM;
+      altitude = bmp280.getLastReading().altitudeM;
+  } else {      
+    // Above 9 Km, don't use baro altitude for termination
+    // Rely on time instead
+    altitude = 0.0f;
   }
 
   // Termination
   unsigned long currentTime = millis();  
-  if(terminationStart == 0 && ((currentTime > TERMINATION_TIME  && !terminationStart) || altitude > TERMINATION_HEIGHT)) {
+  if(terminationStart == 0 && 
+    ((currentTime > TERMINATION_TIME  && !terminationStart) || altitude > TERMINATION_HEIGHT)) {
     logToSDCard("TERMINATING FLIGHT"); 
     digitalWrite(RELAY_PIN, HIGH); // Turn relay ON
     isTerminating = true;
