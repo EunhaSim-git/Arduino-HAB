@@ -28,6 +28,9 @@ unsigned long lastSensorMs = 0;
 const unsigned long AHT10_INTERVAL_MS = 1000UL;  // 1 Hz
 unsigned long lastAht10Ms = 0;
 
+// flush every 5 seconds
+const unsigned long FLUSH_INTERVAL_MS = 5000UL; 
+unsigned long lastFlushMs = 0;
 
 // Create BMP280 module instance
 BMP280Module bmp280(0x77, 1013.25f, SENSOR_INTERVAL_MS);
@@ -94,6 +97,7 @@ void setup() {
 
   lastSensorMs = millis();
   lastAht10Ms = millis();
+  lastFLUSHMs = millis();
 }
 
 void loop() {
@@ -164,8 +168,16 @@ void loop() {
     }
   }
 
+  // Periodic SD flush
+  if (now - lastFlushMs >= FLUSH_INTERVAL_MS) {
+    lastFlushMs += FLUSH_INTERVAL_MS;
+    flushSD();
+  }
+
   // Before termination logic, get current altitude from BMP280
-  float altitude = bmp280.getLastReading().altitudeM;
+  if (bmp280.isValid()) {
+      float altitude = bmp280.getLastReading().altitudeM;
+  }
 
   // Termination
   unsigned long currentTime = millis();  

@@ -67,3 +67,17 @@ void logErrorToSDCard(const String &message) {
     Serial.println(timestamp + " -> " + message);
     }
 }
+
+void flushSD() {
+    if (sdReady && myFile) {
+        myFile.flush();
+    }
+}
+
+void closeSD() {
+    if (sdReady && myFile) {
+        myFile.flush();
+        myFile.close();
+        seReady = false;
+    }
+}

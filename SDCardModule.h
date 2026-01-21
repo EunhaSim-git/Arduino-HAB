@@ -10,6 +10,10 @@ void logToSDCard(const String &data);
 
 void logErrorToSDCard(const String &message);
 
+void flushSD();
+
+void closeSD();
+
 String getTimestamp();
 
 #endif
