@@ -16,13 +16,11 @@ BMP280Module::BMP280Module(uint8_t i2cAddress,
 }
 
 bool BMP280Module::begin() {
-    // Try to initialize sensor at given I2C address
-    if (!bmp_.begin(i2cAddress_)) {         // Adafruit BMP280 begin() [web:3][web:2]
+    if (!bmp_.begin(i2cAddress_)) { 
         initialized_ = false;
         return false;
     }
 
-    // HAB‑friendly config: normal mode, decent oversampling, strong filter. [web:4][web:23][web:27]
     bmp_.setSampling(
         Adafruit_BMP280::MODE_NORMAL,
         Adafruit_BMP280::SAMPLING_X2,      // temperature oversampling
@@ -50,10 +48,10 @@ bool BMP280Module::update() {
     // Keep schedule stable
     lastSampleMs_ += sampleIntervalMs_;
 
-    float tC        = bmp_.readTemperature();          // °C [web:4][web:2]
+    float tC        = bmp_.readTemperature();          // °C 
     float pPa       = bmp_.readPressure();             // Pa
     float pHpa      = pPa / 100.0f;                    // hPa
-    float altM      = bmp_.readAltitude(seaLevelHpa_); // m (approx) [web:4][web:25]
+    float altM      = bmp_.readAltitude(seaLevelHpa_); // m (approx)
 
     lastReading_.timestampMs  = now;
     lastReading_.temperatureC = tC;
@@ -65,7 +63,7 @@ bool BMP280Module::update() {
 }
 
 bool BMP280Module::isValid() const {
-    // BMP280 datasheet: 300–1100 hPa operating range. [web:23][web:110]
+    // BMP280 datasheet: 300–1100 hPa operating range.
     if (isnan(lastReading_.pressureHpa)) {
         return false;
     }

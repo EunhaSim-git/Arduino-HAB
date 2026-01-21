@@ -78,6 +78,6 @@ void closeSD() {
     if (sdReady && myFile) {
         myFile.flush();
         myFile.close();
-        seReady = false;
+        sdReady = false;
     }
 }

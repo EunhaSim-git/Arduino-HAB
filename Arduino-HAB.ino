@@ -97,7 +97,7 @@ void setup() {
 
   lastSensorMs = millis();
   lastAht10Ms = millis();
-  lastFLUSHMs = millis();
+  lastFlushMs = millis();
 }
 
 void loop() {
