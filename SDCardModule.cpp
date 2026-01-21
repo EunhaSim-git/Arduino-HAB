@@ -34,38 +34,36 @@ String getTimestamp(){
 }
 
 void logToSDCard(const String &data) {
+    if(!sdReady || !myFile) {
+        Serial.println(F("SD not ready, cannot log."));
+        return;
+    }
 
     String timestamp = getTimestamp();
-    myFile = SD.open("log.txt", FILE_WRITE);
-
-    if (myFile) {
-        myFile.print(timestamp);  
-        myFile.print(" -> ");     
-        myFile.println(data);  
-        myFile.close();        
-
-        Serial.print("Logged to SD card: ");
-        Serial.println(timestamp + " -> " + data);
-    } else {
-      Serial.println("Error opening log.txt");
-    }
+    
+    myFile.print(timestamp);
+    myFile.print(" -> ");     
+    myFile.println(data);
+    
+    Serial.print("Logged to SD card: ");
+    Serial.println(timestamp + " -> " + data);
 }
 
 void logErrorToSDCard(const String &message) {
+    if(!sdReady || !myFile) {
+        Serial.println(F("SD not ready, log error!"));
+        return;
+    }
 
     String timestamp = getTimestamp();
-    myFile = SD.open("log.txt", FILE_WRITE);
 
-    if (myFile) {
-        myFile.print("**ERROR** ");  
-        myFile.print(timestamp);  
-        myFile.print(" -> ");      
-        myFile.println(message);     
-        myFile.close();          
+    
+    myFile.print("**ERROR** ");  
+    myFile.print(timestamp);  
+    myFile.print(" -> ");      
+    myFile.println(message);     
 
-        Serial.print("Logged to SD card: ");
-        Serial.println(timestamp + " -> " + message);
-    } else {
-      Serial.println("error opening log.txt");
+    Serial.print("Logged to SD card: ");
+    Serial.println(timestamp + " -> " + message);
     }
 }
